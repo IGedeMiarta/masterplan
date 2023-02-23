@@ -274,8 +274,8 @@ class UserController extends Controller
         ]);
         $method = WithdrawMethod::where('id', $request->method_code)->where('status', 1)->firstOrFail();
         $user = auth()->user();
-        $rek = rekening::where('user_id',$user->id)->first();
-
+        $rek = rekening::with('bank')->where('user_id',$user->id)->first();
+       
         if (!$rek) {
             # code...
             $notify[] = ['error', 'You Don`t Have Bank Account, Please Enter Your Bank Account.'];
@@ -301,20 +301,70 @@ class UserController extends Controller
         $afterCharge = $request->amount - $charge;
         $finalAmount = getAmount($afterCharge * $method->rate);
 
-        $withdraw = new Withdrawal();
-        $withdraw->method_id = $method->id; // wallet method ID
-        $withdraw->user_id = $user->id;
-        $withdraw->amount = getAmount($request->amount);
-        $withdraw->currency = $method->currency;
-        $withdraw->rate = $method->rate;
-        $withdraw->charge = $charge;
-        $withdraw->final_amount = $finalAmount;
-        $withdraw->after_charge = $afterCharge;
-        $withdraw->trx = getTrx();
-        $withdraw->save();
+        $trx_no = getTrx();
+        // KPAY WITHDRAWL
+        $data = [
+            'merchantAppCode'       => env('KPAY_APP'),
+            'merchantAppPassword'   => env('KPAY_PAS'),
+            'withdrawalNo'          => $trx_no, 
+            'accountName'           => $rek->nama_akun,
+            'accountNo'             => $rek->no_rek,
+            'bankCode'              => $rek->bank->nama_bank,
+            'bankName'              => $rek->bank->code,
+            'bankBranch'            => 'Asia',
+            'bankCity'              => $rek->kota_cabang,
+            'requestAmount'         => getAmount($request->amount),
+            'additionalMsg'         => $user->username.' Withdraw Money Rp. '.getAmount($request->amount),
+            'processURL'            => url('proccess-url')
+        ];
+        $res = $this->send(env('KPAY_URL').'merchant-withdrawal.php',json_encode($data));
+        $arr = json_decode($res,true);
+        if($arr['success'] == 1){
+            $withdraw = new Withdrawal();
+            $withdraw->method_id = $method->id; // wallet method ID
+            $withdraw->user_id = $user->id;
+            $withdraw->amount = getAmount($request->amount);
+            $withdraw->currency = $method->currency;
+            $withdraw->rate = $method->rate;
+            $withdraw->charge = $charge;
+            $withdraw->final_amount = $finalAmount;
+            $withdraw->after_charge = $afterCharge;
+            $withdraw->trx = $trx_no;
+            $withdraw->save();
+        }
+        dd($arr);
+
         session()->put('wtrx', $withdraw->trx);
         return redirect()->route('user.withdraw.preview');
     }
+
+    
+    public function send($url,$data){
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL             => $url,
+            CURLOPT_RETURNTRANSFER  => true,
+            CURLOPT_ENCODING        => '',
+            CURLOPT_MAXREDIRS       => 10,
+            CURLOPT_TIMEOUT         => 0,
+            CURLOPT_FOLLOWLOCATION  => true,
+            CURLOPT_HTTP_VERSION    => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST   => 'POST',
+            CURLOPT_POSTFIELDS      => $data,
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        return $response;
+    }
+
+    public function process(){
+        return redirect()->route('user.withdraw.preview');
+    }
+
+
 
     public function withdrawPreview()
     {

@@ -9,4 +9,7 @@ class rekening extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+    public function bank(){
+        return $this->belongsTo(bank::class,'nama_bank','nama_bank');
+    }
 }

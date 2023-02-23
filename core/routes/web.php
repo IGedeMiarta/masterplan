@@ -483,6 +483,8 @@ Route::get('cities', [UserController::class,'cities'])->name('cities');
 Route::get('districts', [UserController::class,'districts'])->name('districts');
 Route::get('villages', [UserController::class,'villages'])->name('villages');
 
+Route::get('process-url', [UserController::class,'process'])->name('process');
+
 Route::name('user.')->group(function () {
     Route::get('/login', 'Auth\LoginController@showLoginForm')->name('login');
     Route::post('/login', [LoginController::class,'login']);
