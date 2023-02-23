@@ -315,11 +315,10 @@ class UserController extends Controller
             'bankCity'              => $rek->kota_cabang,
             'requestAmount'         => getAmount($request->amount),
             'additionalMsg'         => $user->username.' Withdraw Money Rp. '.getAmount($request->amount),
-            'processURL'            => url('proccess-url')
+            'processURL'            => url('process-url')
         ];
         $res = $this->send(env('KPAY_URL').'merchant-withdrawal.php',json_encode($data));
         $arr = json_decode($res,true);
-        dd($arr);
         if($arr['success'] == 1){
             $withdraw = new Withdrawal();
             $withdraw->method_id = $method->id; // wallet method ID
