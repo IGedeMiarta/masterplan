@@ -319,6 +319,7 @@ class UserController extends Controller
         ];
         $res = $this->send(env('KPAY_URL').'merchant-withdrawal.php',json_encode($data));
         $arr = json_decode($res,true);
+        dd($arr);
         if($arr['success'] == 1){
             $withdraw = new Withdrawal();
             $withdraw->method_id = $method->id; // wallet method ID
