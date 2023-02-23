@@ -332,7 +332,7 @@ class UserController extends Controller
             $withdraw->trx = $trx_no;
             $withdraw->save();
         }
-        dd($arr);
+        dd(route('process'));
 
         session()->put('wtrx', $withdraw->trx);
         return redirect()->route('user.withdraw.preview');
@@ -361,7 +361,7 @@ class UserController extends Controller
     }
 
     public function process(){
-        return redirect()->route('user.withdraw.preview');
+        return redirect()->route('user.report.withdraw');
     }
 
 
