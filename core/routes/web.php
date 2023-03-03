@@ -483,7 +483,7 @@ Route::get('cities', [UserController::class,'cities'])->name('cities');
 Route::get('districts', [UserController::class,'districts'])->name('districts');
 Route::get('villages', [UserController::class,'villages'])->name('villages');
 
-Route::get('process', function(){
+Route::get('notification', function(){
     return 'wd-success';
 })->name('processUrl');
 

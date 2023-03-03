@@ -175,7 +175,7 @@ class UserController extends Controller
 
         }else{
            $in['address'] = [
-                'address' => $request->alamat,
+                'address' =>$request->alamat,
                 'state' => auth()->user()->address->prov,
                 'zip' => $request->pos,
                 'country' => $request->country,
@@ -268,6 +268,7 @@ class UserController extends Controller
 
     public function withdrawStore(Request $request)
     {
+        dd($request->all());
         $this->validate($request, [
             'method_code' => 'required',
             'amount' => 'required|numeric'
@@ -319,7 +320,8 @@ class UserController extends Controller
         ];
         $res = $this->send(env('KPAY_URL').'merchant-withdrawal.php',json_encode($data));
         $arr = json_decode($res,true);
-       return redirect()->route('processUrl');
+        dd($arr);
+        
         if($arr['success'] == 1){
             $withdraw = new Withdrawal();
             $withdraw->method_id = $method->id; // wallet method ID
