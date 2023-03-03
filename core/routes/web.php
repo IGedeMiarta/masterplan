@@ -483,9 +483,15 @@ Route::get('cities', [UserController::class,'cities'])->name('cities');
 Route::get('districts', [UserController::class,'districts'])->name('districts');
 Route::get('villages', [UserController::class,'villages'])->name('villages');
 
-Route::get('notification', function(){
+Route::get('proccess', function(){
     return 'wd-success';
-})->name('processUrl');
+})->name('process');
+Route::get('cancel', function(){
+    return 'wd-success cancel';
+})->name('cancel');
+Route::get('success', function(){
+    return 'wd-success success';
+})->name('success');
 
 Route::name('user.')->group(function () {
     Route::get('/login', 'Auth\LoginController@showLoginForm')->name('login');
