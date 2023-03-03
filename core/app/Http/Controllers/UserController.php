@@ -346,7 +346,7 @@ class UserController extends Controller
             "successURL"    => url('success')
         ];
 
-        $res = $this->send(env('KPAY_URL').'merchant-withdrawal.php',json_encode($data));
+        $res = $this->send(env('KPAY_URL').'transaction-process.php',json_encode($data));
         $arr = json_decode($res,true);
         dd($arr);
         
