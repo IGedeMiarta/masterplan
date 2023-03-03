@@ -268,7 +268,6 @@ class UserController extends Controller
 
     public function withdrawStore(Request $request)
     {
-        dd($request->all());
         $this->validate($request, [
             'method_code' => 'required',
             'amount' => 'required|numeric'
@@ -304,20 +303,49 @@ class UserController extends Controller
 
         $trx_no = getTrx();
         // KPAY WITHDRAWL
-        $data = [
-            'merchantAppCode'       => env('KPAY_APP'),
-            'merchantAppPassword'   => env('KPAY_PAS'),
-            'withdrawalNo'          => $trx_no, 
-            'accountName'           => $rek->nama_akun,
-            'accountNo'             => $rek->no_rek,
-            'bankCode'              => $rek->bank->nama_bank,
-            'bankName'              => $rek->bank->code,
-            'bankBranch'            => 'Asia',
-            'bankCity'              => $rek->kota_cabang,
-            'requestAmount'         => getAmount($request->amount),
-            'additionalMsg'         => $user->username.' Withdraw Money Rp. '.getAmount($request->amount),
-            'processURL'            => route('processUrl')
+        // $data = [
+        //     'withdrawalNo'          => $trx_no, 
+        //     'merchantAppCode'       => env('KPAY_APP'),
+        //     'merchantAppPassword'   => env('KPAY_PAS'),
+        //     'accountName'           => $rek->nama_akun,
+        //     'accountNo'             => $rek->no_rek,
+        //     'bankCode'              => $rek->bank->nama_bank,
+        //     'bankName'              => $rek->bank->code,
+        //     'bankBranch'            => 'Asia',
+        //     'bankCity'              => $rek->kota_cabang,
+        //     'requestAmount'         => getAmount($request->amount),
+        //     'additionalMsg'         => $user->username.' Withdraw Money Rp. '.getAmount($request->amount),
+        //     'processURL'            => route('processUrl')
+        // ];
+        $product_no = [
+            1
         ];
+        $product_desc = [
+            'Masterplan Withdrawl'
+        ];
+        $product_qty = [
+            1
+        ];
+        $product_amount = [
+            getAmount($request->amount)
+        ];
+        $data = [
+            'merchantAppCode' => env('KPAY_APP'),
+            'merchantAppPassword' => env('KPAY_PAS'),
+            'userEmail'     => 'miartayasa10@gmail.com',
+            'orderNo'       => $trx_no,
+            'orderAmt'      => getAmount($request->amount),
+            'additionalMsg' => $user->username.' Withdraw Money Rp. '.getAmount($request->amount),
+            'productNo'     => $product_no,
+            'productDesc'   => $product_desc,
+            "productQty"    => $product_qty,
+            "productAmt"    => $product_amount,
+            "discountAmt"   => 0,
+            "processURL"    => url('proccess'),
+            "cancelURL"     => url('cancel'),
+            "successURL"    => url('success')
+        ];
+
         $res = $this->send(env('KPAY_URL').'merchant-withdrawal.php',json_encode($data));
         $arr = json_decode($res,true);
         dd($arr);
