@@ -78,13 +78,15 @@ class ureward extends Model
         foreach ($data as $key => $value) {
             $rs .=          '<div class="card mr-2 mt-3 100  h-100 bg--10 text-white b-radius--10 box-shadow">';
             $rs .=              '<div class="row card-body">';
-            $rs .=                 '<img src="'.getImage("assets/images/user/profile/". $value->user->image,  null, true).'" class="col-sm-6 rounded-circle" alt="..." style="width: 2%;height: 2%;">';
+            $rs .=                  '<span class="navbar-user">';
+            $rs .=                  '<span class="navbar-user__thumb"><img src="'.getImage("assets/images/user/profile/". $value->user->image,  null, true).'" class="col-sm-6 rounded-circle" alt="..."></span>';
             $rs .=                      '<div class="col-sm-6">';
             $rs .=                          '<h5 class="card-title">'.$value->user->username.'</h5>';
             $rs .=                          '<p class="card-text">'.$value->reward->reward.' </p>';
             $rs .=                          '<p class="card-text">'.$value->details()['left'].'|'.$value->details()['right'].' </p>';
             $rs .=                          '<p class="card-text">'.$value->details()['is_gold']?'<span class="badge rounded-pill badge-warning">Gold</span>':'<span class="badge rounded-pill badge-secondary">Silver</span></p>';
             $rs .=                      '</div>';
+            $rs .=                  '</span>';
             $rs .=              '</div>';
             $rs .=          '</div>';
         }
@@ -97,13 +99,15 @@ class ureward extends Model
             foreach ($data2 as $key => $value) {
                 $rs .=          '<div class="card mr-2 mt-3 100  h-100 bg--10 text-white b-radius--10 box-shadow">';
                 $rs .=              '<div class="row card-body">';
-                $rs .=                 '<img src="'.getImage("assets/images/user/profile/". $value->user->image,  null, true).'" class="col-sm-6 rounded-circle" alt="..." style="width: 2%;height: 2%;">';
+                $rs .=                  '<span class="navbar-user">';
+                $rs .=                  '<span class="navbar-user__thumb"><img src="'.getImage("assets/images/user/profile/". $value->user->image,  null, true).'" class="col-sm-6 rounded-circle" alt="..."></span>';
                 $rs .=                      '<div class="col-sm-6">';
                 $rs .=                          '<h5 class="card-title">'.$value->user->username.'</h5>';
                 $rs .=                          '<p class="card-text">'.$value->reward->reward.' </p>';
                 $rs .=                          '<p class="card-text">'.$value->details()['left'].'|'.$value->details()['right'].' </p>';
                 $rs .=                          '<p class="card-text">'.$value->details()['is_gold']?'<span class="badge rounded-pill badge-warning">Gold</span>':'<span class="badge rounded-pill badge-secondary">Silver</span></p>';
                 $rs .=                      '</div>';
+                $rs .=                  '</span>';
                 $rs .=              '</div>';
                 $rs .=          '</div>';
             }
@@ -116,13 +120,15 @@ class ureward extends Model
             foreach ($data3 as $key => $value) {
                 $rs .=          '<div class="card mr-2 mt-3 100  h-100 bg--10 text-white b-radius--10 box-shadow">';
                 $rs .=              '<div class="row card-body">';
-                $rs .=                 '<img src="'.getImage("assets/images/user/profile/". $value->user->image,  null, true).'" class="col-sm-6 rounded-circle" alt="..." style="width: 2%;height: 2%;">';
+                $rs .=                  '<span class="navbar-user">';
+                $rs .=                  '<span class="navbar-user__thumb"><img src="'.getImage("assets/images/user/profile/". $value->user->image,  null, true).'" class="col-sm-6 rounded-circle" alt="..."></span>';
                 $rs .=                      '<div class="col-sm-6">';
                 $rs .=                          '<h5 class="card-title">'.$value->user->username.'</h5>';
                 $rs .=                          '<p class="card-text">'.$value->reward->reward.' </p>';
                 $rs .=                          '<p class="card-text">'.$value->details()['left'].'|'.$value->details()['right'].' </p>';
                 $rs .=                          '<p class="card-text">'.$value->details()['is_gold']?'<span class="badge rounded-pill badge-warning">Gold</span>':'<span class="badge rounded-pill badge-secondary">Silver</span></p>';
                 $rs .=                      '</div>';
+                $rs .=                  '</span>';
                 $rs .=              '</div>';
                 $rs .=          '</div>';
             }
